@@ -1,7 +1,6 @@
 library bottom_navy_bar;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// A beautiful and animated bottom navigation that paints a rounded shape
 /// around its [items] to provide a wonderful look.
@@ -21,6 +20,8 @@ class BottomNavyBar extends StatelessWidget {
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     required this.items,
     required this.onItemSelected,
+    this.selectedItemSize = 130,
+    this.itemSize = 50,
     this.curve = Curves.linear,
   })  : assert(items.length >= 2 && items.length <= 5),
         super(key: key);
@@ -59,6 +60,12 @@ class BottomNavyBar extends StatelessWidget {
   /// Defines the bottom navigation bar height. Defaults to 56.
   final double containerHeight;
 
+  /// Defines the selected item size. Defaults to 130.
+  final double selectedItemSize;
+
+  /// Defines the unselected item size. Defaults to 50.
+  final double itemSize;
+
   /// Used to configure the animation curve. Defaults to [Curves.linear].
   final Curve curve;
 
@@ -91,6 +98,8 @@ class BottomNavyBar extends StatelessWidget {
                 child: _ItemWidget(
                   item: item,
                   iconSize: iconSize,
+                  selectedItemSize: selectedItemSize,
+                  itemSize: itemSize,
                   isSelected: index == selectedIndex,
                   backgroundColor: bgColor,
                   itemCornerRadius: itemCornerRadius,
@@ -108,6 +117,8 @@ class BottomNavyBar extends StatelessWidget {
 
 class _ItemWidget extends StatelessWidget {
   final double iconSize;
+  final double selectedItemSize;
+  final double itemSize;
   final bool isSelected;
   final BottomNavyBarItem item;
   final Color backgroundColor;
@@ -123,6 +134,8 @@ class _ItemWidget extends StatelessWidget {
     required this.animationDuration,
     required this.itemCornerRadius,
     required this.iconSize,
+    required this.selectedItemSize,
+    required this.itemSize,
     this.curve = Curves.linear,
   }) : super(key: key);
 
@@ -132,7 +145,7 @@ class _ItemWidget extends StatelessWidget {
       container: true,
       selected: isSelected,
       child: AnimatedContainer(
-        width: isSelected ? 130 : 50,
+        width: isSelected ? selectedItemSize : itemSize,
         height: double.maxFinite,
         duration: animationDuration,
         curve: curve,
@@ -145,7 +158,7 @@ class _ItemWidget extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           physics: NeverScrollableScrollPhysics(),
           child: Container(
-            width: isSelected ? 130 : 50,
+            width: isSelected ? selectedItemSize : itemSize,
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               mainAxisSize: MainAxisSize.max,
